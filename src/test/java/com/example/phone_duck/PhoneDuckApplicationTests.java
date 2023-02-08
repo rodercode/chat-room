@@ -6,9 +6,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class PhoneDuckApplicationTests {
 
-    @Test
-    void contextLoads() {
-        System.out.println("test");
-    }
+
 
 }

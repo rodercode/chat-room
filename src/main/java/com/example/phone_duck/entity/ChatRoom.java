@@ -3,10 +3,9 @@ package com.example.phone_duck.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-@NoArgsConstructor
 @Getter
 @Setter
-
+@NoArgsConstructor
 @Entity
 @Table(name = "channels", uniqueConstraints = {
         @UniqueConstraint(name = "chatRoom_name_unique", columnNames = "name")
@@ -19,5 +18,5 @@ public class ChatRoom {
     private Long id;
 
     @Column(name = "name", nullable = false)
-    private String title;
+    private String name;
 }

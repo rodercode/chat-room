@@ -12,15 +12,17 @@ public class ChatRoomService {
     @Autowired
     private ChatRoomRepo chatRoomRepo;
 
-    public List<ChatRoom> readAllChatRoom(){
+    public List<ChatRoom> readAll(){
         return chatRoomRepo.findAll();
     }
 
-    public void createChatRoom(ChatRoom chatRoom){
+    public void create(ChatRoom chatRoom){
         chatRoomRepo.save(chatRoom);
     }
 
-    public void deleteChatRoom(Long id){
+
+
+    public void delete(Long id){
         chatRoomRepo.deleteById(id);
     }
 
