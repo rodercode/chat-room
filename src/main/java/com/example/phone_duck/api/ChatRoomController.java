@@ -4,6 +4,8 @@ import com.example.phone_duck.entity.ChatRoom;
 import com.example.phone_duck.service.ChatRoomService;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,25 +13,24 @@ import java.util.List;
 @RestController
 @RequestMapping("channels")
 public class ChatRoomController {
-
     @Autowired
     private ChatRoomService chatRoomService;
 
     @GetMapping
-    private List<ChatRoom> showAllChatRoom(){
-        return chatRoomService.readAll();
+    private ResponseEntity<List<ChatRoom>> showAllChatRoom(){
+        return new ResponseEntity<>(chatRoomService.readAll(), HttpStatus.OK);
     }
 
     @PostMapping("create")
-    private String createChatRoom(@RequestBody ChatRoom chatRoom) {
+    private ResponseEntity<String> createChatRoom(@RequestBody ChatRoom chatRoom) {
         chatRoomService.create(chatRoom);
-        return "Chat Room was created";
+        return new ResponseEntity<>("Chat Room was created",HttpStatus.CREATED);
     }
 
     @DeleteMapping("{id}/delete")
-    private String deleteChatRoom(@PathVariable("id") Long id){
+    private ResponseEntity<String> deleteChatRoom(@PathVariable("id") Long id){
         chatRoomService.delete(id);
-        return "Chat Room was deleted";
+        return new ResponseEntity<>("Chat Room was deleted",HttpStatus.OK) ;
     }
 
 }
