@@ -12,8 +12,12 @@ public class ChatRoomService {
     @Autowired
     private ChatRoomRepo chatRoomRepo;
 
-    public List<ChatRoom> readAllChannels(){
+    public List<ChatRoom> readAllChatRoom(){
         return chatRoomRepo.findAll();
+    }
+
+    public void createChatRoom(ChatRoom chatRoom){
+        chatRoomRepo.save(chatRoom);
     }
 
 
