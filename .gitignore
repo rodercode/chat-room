@@ -13,6 +13,7 @@ target/
 .springBeans
 .sts4-cache
 
+
 ### IntelliJ IDEA ###
 
 .idea
@@ -66,8 +67,6 @@ cmake-build-*/
 # Mongo Explorer plugin
 .idea/**/mongoSettings.xml
 
-
-
 # IntelliJ
 out/
 
@@ -92,3 +91,6 @@ fabric.properties
 # Editor-based Rest Client
 .idea/httpRequests
 
+
+
+/src/main/resources/env.properties
