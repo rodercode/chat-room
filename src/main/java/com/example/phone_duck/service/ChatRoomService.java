@@ -19,9 +19,6 @@ public class ChatRoomService {
     public void create(ChatRoom chatRoom){
         chatRoomRepo.save(chatRoom);
     }
-
-
-
     public void delete(Long id){
         chatRoomRepo.deleteById(id);
     }

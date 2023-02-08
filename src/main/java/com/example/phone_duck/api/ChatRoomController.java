@@ -26,4 +26,10 @@ public class ChatRoomController {
         return "Chat Room was created";
     }
 
+    @DeleteMapping("{id}/delete")
+    private String deleteChatRoom(@PathVariable("id") Long id){
+        chatRoomService.delete(id);
+        return "Chat Room was deleted";
+    }
+
 }
