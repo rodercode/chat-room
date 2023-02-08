@@ -14,10 +14,13 @@ target/
 .sts4-cache
 
 ### IntelliJ IDEA ###
+
 .idea
 *.iws
 *.iml
 *.ipr
+*.properties
+
 
 ### NetBeans ###
 /nbproject/private/
@@ -63,6 +66,8 @@ cmake-build-*/
 
 # Mongo Explorer plugin
 .idea/**/mongoSettings.xml
+
+
 
 # IntelliJ
 out/
