@@ -20,6 +20,10 @@ public class ChatRoomService {
         chatRoomRepo.save(chatRoom);
     }
 
+    public void deleteChatRoom(Long id){
+        chatRoomRepo.deleteById(id);
+    }
+
 
 
 }
