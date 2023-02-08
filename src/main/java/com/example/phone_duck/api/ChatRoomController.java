@@ -18,6 +18,12 @@ public class ChatRoomController {
 
     @GetMapping
     private ResponseEntity<List<ChatRoom>> showAllChatRoom(){
+        if (chatRoomService.readAll().isEmpty()){
+            return ResponseEntity
+                    .status(204)
+                    .header("x-information", "there are none ChatRoom active")
+                    .build();
+        }
         return new ResponseEntity<>(chatRoomService.readAll(), HttpStatus.OK);
     }
 
