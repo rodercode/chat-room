@@ -24,7 +24,6 @@ public class MainChatRoomSocketHandler extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-
         webSocketSessions.add(session);
         System.out.println("Create Session");
     }
