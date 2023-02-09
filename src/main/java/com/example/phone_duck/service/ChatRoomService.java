@@ -12,6 +12,10 @@ public class ChatRoomService {
     @Autowired
     private ChatRoomRepo chatRoomRepo;
 
+    public ChatRoom read(Long id){
+        return chatRoomRepo.getReferenceById(id);
+    }
+
     public List<ChatRoom> readAll(){
         return chatRoomRepo.findAll();
     }
