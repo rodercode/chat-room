@@ -40,6 +40,7 @@ public class ChatRoomController {
                     .header("error-information","Please enter a different name, this name already exist")
                     .build();
         }
+
         return new ResponseEntity<>("Chat Room was created",HttpStatus.CREATED);
     }
 

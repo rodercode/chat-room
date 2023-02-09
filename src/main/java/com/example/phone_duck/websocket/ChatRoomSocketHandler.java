@@ -1,5 +1,6 @@
 package com.example.phone_duck.websocket;
 
+import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
@@ -8,7 +9,7 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
+@Component
 public class ChatRoomSocketHandler extends TextWebSocketHandler {
     private List<WebSocketSession> webSocketSessions = new ArrayList<>();
 
