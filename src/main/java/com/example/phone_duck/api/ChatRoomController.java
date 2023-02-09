@@ -2,9 +2,7 @@ package com.example.phone_duck.api;
 
 import com.example.phone_duck.entity.ChatRoom;
 import com.example.phone_duck.service.ChatRoomService;
-import com.example.phone_duck.websocket.ChatRoomSocketHandler;
-import lombok.Getter;
-import org.aspectj.weaver.ast.Not;
+import com.example.phone_duck.websocket.MainChatRoomSocketHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -22,7 +20,7 @@ public class ChatRoomController {
     private ChatRoomService chatRoomService;
 
     @Autowired
-    private ChatRoomSocketHandler chatRoomSocketHandler;
+    private MainChatRoomSocketHandler chatRoomSocketHandler;
 
     @GetMapping
     private ResponseEntity<List<ChatRoom>> showAllChatRoom() throws IOException {
@@ -33,7 +31,7 @@ public class ChatRoomController {
                     .build();
         }
         for (ChatRoom chatRoom : chatRoomService.readAll()) {
-            chatRoomSocketHandler.broadcast("Channel: " + chatRoom.getName());
+            chatRoomSocketHandler.broadcast("Active Channel: " + chatRoom.getName());
         }
         return new ResponseEntity<>(chatRoomService.readAll(), HttpStatus.OK);
     }
