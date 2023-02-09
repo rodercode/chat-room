@@ -50,7 +50,8 @@ public class ChatRoomController {
     }
 
     @DeleteMapping("{id}/delete")
-    private ResponseEntity<String> deleteChatRoom(@PathVariable("id") Long id){
+    private ResponseEntity<String> deleteChatRoom(@PathVariable("id") Long id) throws IOException {
+        String name = chatRoomService.read(id).getName();
         try{
             chatRoomService.delete(id);
         }catch (EmptyResultDataAccessException e){
@@ -59,6 +60,7 @@ public class ChatRoomController {
                    .header("x-information","ChatRoom you were tried to delete does not exist")
                    .build();
         }
+        chatRoomSocketHandler.broadcast(name +" Has been deleted");
         return new ResponseEntity<>("Chat Room was deleted",HttpStatus.OK) ;
     }
 
