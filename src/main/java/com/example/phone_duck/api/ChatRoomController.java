@@ -2,6 +2,7 @@ package com.example.phone_duck.api;
 
 import com.example.phone_duck.entity.ChatRoom;
 import com.example.phone_duck.service.ChatRoomService;
+import com.example.phone_duck.websocket.ChatRoomSocketHandler;
 import lombok.Getter;
 import org.aspectj.weaver.ast.Not;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -18,6 +20,9 @@ import java.util.List;
 public class ChatRoomController {
     @Autowired
     private ChatRoomService chatRoomService;
+
+    @Autowired
+    private ChatRoomSocketHandler chatRoomSocketHandler;
 
     @GetMapping
     private ResponseEntity<List<ChatRoom>> showAllChatRoom(){
@@ -31,7 +36,7 @@ public class ChatRoomController {
     }
 
     @PostMapping("create")
-    private ResponseEntity<String> createChatRoom(@RequestBody ChatRoom chatRoom) {
+    private ResponseEntity<String> createChatRoom(@RequestBody ChatRoom chatRoom) throws IOException {
         try {
             chatRoomService.create(chatRoom);
         }catch (DataIntegrityViolationException e){
@@ -40,6 +45,7 @@ public class ChatRoomController {
                     .header("error-information","Please enter a different name, this name already exist")
                     .build();
         }
+        chatRoomSocketHandler.broadcast(chatRoom.getName()+ "Has been created");
         return new ResponseEntity<>("Chat Room was created",HttpStatus.CREATED);
     }
 
