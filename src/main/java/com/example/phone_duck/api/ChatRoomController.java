@@ -25,12 +25,15 @@ public class ChatRoomController {
     private ChatRoomSocketHandler chatRoomSocketHandler;
 
     @GetMapping
-    private ResponseEntity<List<ChatRoom>> showAllChatRoom(){
-        if (chatRoomService.readAll().isEmpty()){
+    private ResponseEntity<List<ChatRoom>> showAllChatRoom() throws IOException {
+        if (chatRoomService.readAll().isEmpty()) {
             return ResponseEntity
                     .status(204)
                     .header("x-information", "there are no ChatRooms active")
                     .build();
+        }
+        for (ChatRoom chatRoom : chatRoomService.readAll()) {
+            chatRoomSocketHandler.broadcast("Channel: " + chatRoom.getName());
         }
         return new ResponseEntity<>(chatRoomService.readAll(), HttpStatus.OK);
     }
@@ -39,28 +42,28 @@ public class ChatRoomController {
     private ResponseEntity<String> createChatRoom(@RequestBody ChatRoom chatRoom) throws IOException {
         try {
             chatRoomService.create(chatRoom);
-        }catch (DataIntegrityViolationException e){
+        } catch (DataIntegrityViolationException e) {
             return ResponseEntity
                     .status(422)
-                    .header("error-information","Please enter a different name, this name already exist")
+                    .header("error-information", "Please enter a different name, this name already exist")
                     .build();
         }
-        chatRoomSocketHandler.broadcast(chatRoom.getName()+ "Has been created");
-        return new ResponseEntity<>("Chat Room was created",HttpStatus.CREATED);
+        chatRoomSocketHandler.broadcast(chatRoom.getName() + "Has been created");
+        return new ResponseEntity<>("Chat Room was created", HttpStatus.CREATED);
     }
 
     @DeleteMapping("{id}/delete")
     private ResponseEntity<String> deleteChatRoom(@PathVariable("id") Long id) throws IOException {
-        try{
+        try {
             chatRoomService.delete(id);
-        }catch (EmptyResultDataAccessException e){
-           return ResponseEntity
-                   .status(404)
-                   .header("x-information","ChatRoom you were tried to delete does not exist")
-                   .build();
+        } catch (EmptyResultDataAccessException e) {
+            return ResponseEntity
+                    .status(404)
+                    .header("x-information", "ChatRoom you were tried to delete does not exist")
+                    .build();
         }
         chatRoomSocketHandler.broadcast("Chat Room Has been deleted");
-        return new ResponseEntity<>("Chat Room was deleted",HttpStatus.OK) ;
+        return new ResponseEntity<>("Chat Room was deleted", HttpStatus.OK);
     }
 
 }

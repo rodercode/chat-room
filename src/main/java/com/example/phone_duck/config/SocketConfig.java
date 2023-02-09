@@ -15,9 +15,10 @@ public class SocketConfig implements WebSocketConfigurer {
 
     @Autowired
     private ChatRoomSocketHandler chatRoomSocketHandler;
+    private String name = "chatroom";
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
         registry.addHandler(chatRoomSocketHandler,"/sub/channels");
-        registry.addHandler(new ChatRoomSocketHandler(), "/sub/chat");
+        registry.addHandler(new ChatRoomSocketHandler(), "/sub/chat/"+ name);
     }
 }
