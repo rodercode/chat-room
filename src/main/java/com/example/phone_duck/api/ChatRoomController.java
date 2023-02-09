@@ -59,7 +59,8 @@ public class ChatRoomController {
                    .header("x-information","ChatRoom you were tried to delete does not exist")
                    .build();
         }
-        chatRoomSocketHandler.broadcast("Chat Room Has been deleted");
+        ChatRoom chatRoom = chatRoomService.read(id);
+        chatRoomSocketHandler.broadcast(chatRoom.getName() +" Has been deleted");
         return new ResponseEntity<>("Chat Room was deleted",HttpStatus.OK) ;
     }
 
