@@ -46,8 +46,8 @@ public class ChatRoomController {
                     .header("error-information", "Please enter a different name, this name already exist")
                     .build();
         }
-        chatRoomSocketHandler.broadcast(chatRoom.getName() + "Has been created");
-        return new ResponseEntity<>("Chat Room was created", HttpStatus.CREATED);
+        chatRoomSocketHandler.broadcast("Created: "+chatRoom.getName());
+        return new ResponseEntity<>("Chat room has been created", HttpStatus.CREATED);
     }
 
     @DeleteMapping("{id}/delete")
@@ -60,8 +60,8 @@ public class ChatRoomController {
                     .header("x-information", "ChatRoom you were tried to delete does not exist")
                     .build();
         }
-        chatRoomSocketHandler.broadcast("Chat Room Has been deleted");
-        return new ResponseEntity<>("Chat Room was deleted", HttpStatus.OK);
+        chatRoomSocketHandler.broadcast("Deleted: Chat Room");
+        return new ResponseEntity<>("Channel Deleted: Chat Room", HttpStatus.OK);
     }
 
 }
