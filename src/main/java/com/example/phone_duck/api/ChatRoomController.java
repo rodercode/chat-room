@@ -66,7 +66,7 @@ public class ChatRoomController {
             case "offline" -> chatRoom.setIsOnline(false);
             default -> throw new IllegalStateException(state + "was not defined");
         }
-        chatRoomService.save(chatRoom);
+        chatRoomService.saveChatRoom(chatRoom);
         return new ResponseEntity<>("Chat Room is" + state, HttpStatus.OK);
     }
 
