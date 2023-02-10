@@ -1,5 +1,6 @@
 package com.example.phone_duck.websocket;
 
+import com.example.phone_duck.entity.ChatRoom;
 import com.example.phone_duck.service.ChatRoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -9,24 +10,29 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.io.IOException;
+import java.nio.channels.Channel;
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
 public class ChatRoomSocketHandler extends TextWebSocketHandler {
 
+    @Autowired
+    private ChatRoomService chatRoomService;
 
     private List<WebSocketSession> webSocketSessions = new ArrayList<>();
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-        broadcast(message.getPayload(), message.getPayload());
+        String channel = session.getHandshakeHeaders().getFirst("id");
+        broadcast(channel, message.getPayload());
+
     }
 
     public void broadcast(String channel, String message) throws IOException {
         for (WebSocketSession webSocketSession : webSocketSessions) {
             String id = webSocketSession.getHandshakeHeaders().getFirst("id");
-            if (id.equals("44")){
+            if (channel.equals(id)) {
                 webSocketSession.sendMessage(new TextMessage(message));
             }
         }
