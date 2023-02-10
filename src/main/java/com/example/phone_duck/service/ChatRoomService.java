@@ -16,6 +16,10 @@ public class ChatRoomService {
         return chatRoomRepo.getReferenceById(id);
     }
 
+    public void saveChatRoom(ChatRoom chatRoom){
+        chatRoomRepo.save(chatRoom);
+    }
+
 
     public List<ChatRoom> readAll(){
         return chatRoomRepo.findAll();
