@@ -9,20 +9,25 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
 @Component
 public class ChatRoomSocketHandler extends TextWebSocketHandler {
     private List<WebSocketSession> webSocketSessions = new ArrayList<>();
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-        broadcast(message.getPayload());
+        broadcast(message.getPayload(), message.getPayload());
     }
 
-    public void broadcast(String message) throws IOException {
+    public void broadcast(String channel, String message) throws IOException {
         for (WebSocketSession webSocketSession : webSocketSessions) {
-            webSocketSession.sendMessage(new TextMessage("Message: " +message));
+            String id = webSocketSession.getHandshakeHeaders().getFirst("id");
+            if (id.equals("44")){
+                webSocketSession.sendMessage(new TextMessage(message));
+            }
         }
     }
+
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         webSocketSessions.add(session);
