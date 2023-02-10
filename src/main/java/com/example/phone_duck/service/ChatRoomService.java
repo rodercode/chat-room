@@ -20,6 +20,10 @@ public class ChatRoomService {
         chatRoomRepo.save(chatRoom);
     }
 
+    public List<ChatRoom> readAllActiveChatRoom(){
+        return chatRoomRepo.findAllByIsOnlineTrue();
+    }
+
 
     public List<ChatRoom> readAll(){
         return chatRoomRepo.findAll();

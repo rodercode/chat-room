@@ -1,5 +1,7 @@
 package com.example.phone_duck.websocket;
 
+import com.example.phone_duck.service.ChatRoomService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
@@ -12,6 +14,8 @@ import java.util.List;
 
 @Component
 public class ChatRoomSocketHandler extends TextWebSocketHandler {
+
+
     private List<WebSocketSession> webSocketSessions = new ArrayList<>();
 
     @Override
