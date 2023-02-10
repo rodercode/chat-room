@@ -19,4 +19,6 @@ public class ChatRoom {
 
     @Column(name = "name", nullable = false)
     private String name;
+
+    private Boolean isOnline = false;
 }

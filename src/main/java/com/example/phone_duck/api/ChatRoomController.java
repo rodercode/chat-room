@@ -2,6 +2,7 @@ package com.example.phone_duck.api;
 
 import com.example.phone_duck.entity.ChatRoom;
 import com.example.phone_duck.service.ChatRoomService;
+import com.example.phone_duck.websocket.ChatRoomSocketHandler;
 import com.example.phone_duck.websocket.MainChatRoomSocketHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -20,7 +21,10 @@ public class ChatRoomController {
     private ChatRoomService chatRoomService;
 
     @Autowired
-    private MainChatRoomSocketHandler chatRoomSocketHandler;
+    private MainChatRoomSocketHandler mainChatRoomSocketHandler;
+
+    @Autowired
+    private ChatRoomSocketHandler chatRoomSocketHandler;
 
     @GetMapping
     private ResponseEntity<List<ChatRoom>> showAllChatRoom() throws IOException {
@@ -31,7 +35,7 @@ public class ChatRoomController {
                     .build();
         }
         for (ChatRoom chatRoom : chatRoomService.readAll()) {
-            chatRoomSocketHandler.broadcast("Active Channel: " + chatRoom.getName());
+            mainChatRoomSocketHandler.broadcast("Active Channel: " + chatRoom.getName());
         }
         return new ResponseEntity<>(chatRoomService.readAll(), HttpStatus.OK);
     }
@@ -46,8 +50,12 @@ public class ChatRoomController {
                     .header("error-information", "Please enter a different name, this name already exist")
                     .build();
         }
-        chatRoomSocketHandler.broadcast("Created: "+chatRoom.getName());
+        mainChatRoomSocketHandler.broadcast("Created: " + chatRoom.getName());
         return new ResponseEntity<>("Chat room has been created", HttpStatus.CREATED);
+
+//        else(){
+//         chatRoomSocketHandler.broadcast(40,"Created: "+chatRoom.getName())
+//        }
     }
 
     @DeleteMapping("{id}/delete")
@@ -60,7 +68,7 @@ public class ChatRoomController {
                     .header("x-information", "ChatRoom you were tried to delete does not exist")
                     .build();
         }
-        chatRoomSocketHandler.broadcast("Deleted: Chat Room");
+        mainChatRoomSocketHandler.broadcast("Deleted: Chat Room");
         return new ResponseEntity<>("Channel Deleted: Chat Room", HttpStatus.OK);
     }
 
