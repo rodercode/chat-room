@@ -58,6 +58,19 @@ public class ChatRoomController {
 //        }
     }
 
+    @PatchMapping("{state}/{id}/")
+    private ResponseEntity<String> activateChatRoom(@PathVariable String state, @PathVariable("id") Long id) {
+        ChatRoom chatRoom = chatRoomService.getChatRoom(id);
+        switch (state) {
+            case "online" -> chatRoom.setIsOnline(true);
+            case "offline" -> chatRoom.setIsOnline(false);
+            default -> throw new IllegalStateException(state + "was not defined");
+        }
+        chatRoomService.save(chatRoom);
+        return new ResponseEntity<>("Chat Room is" + state, HttpStatus.OK);
+    }
+
+
     @DeleteMapping("{id}/delete")
     private ResponseEntity<String> deleteChatRoom(@PathVariable("id") Long id) throws IOException {
         try {
