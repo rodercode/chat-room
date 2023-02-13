@@ -40,6 +40,7 @@ public class ChatRoomController {
             return new ResponseEntity<>(chatRoomService.readAll(), HttpStatus.OK);
         }
     }
+
     @PostMapping
     private ResponseEntity<String> createChatRoom(@RequestBody ChatRoom chatRoom) throws IOException {
         if (chatRoomService.getChatRoom(chatRoom.getName()) != null)
@@ -50,7 +51,8 @@ public class ChatRoomController {
             return new ResponseEntity<>(chatRoom.getName() + " has been created", HttpStatus.CREATED);
         }
     }
-    @PatchMapping("/{status}/{id}/")
+
+    @PatchMapping("/{status}/{id}")
     private ResponseEntity<String> activateChatRoom(@PathVariable String status, @PathVariable Long id) {
         if (chatRoomService.getChatRoom(id).isEmpty())
             throw new ResourceNotFoundException("Could not update chat room because it doesn't exist");
@@ -62,17 +64,19 @@ public class ChatRoomController {
                 default -> throw new IllegalStateException(status + "was not defined");
             }
             chatRoomService.saveChatRoom(chatRoom.get());
-            return new ResponseEntity<>("Chat Room is " + status, HttpStatus.OK);
+            return new ResponseEntity<>(chatRoomService.getChatRoom(id).get().getName() + " is " + status, HttpStatus.OK);
         }
     }
+
     @DeleteMapping("/{id}")
     private ResponseEntity<String> deleteChatRoom(@PathVariable("id") Long id) throws IOException {
         if (chatRoomService.getChatRoom(id).isEmpty())
             throw new ResourceNotFoundException("Chat Room you were trying to delete does not exist");
         else {
+            String name = chatRoomService.getChatRoom(id).get().getName();
             chatRoomService.delete(id);
             mainChatRoomSocketHandler.broadcast("Deleted: Chat Room");
-            return new ResponseEntity<>("Channel Deleted: Chat Room", HttpStatus.OK);
+            return new ResponseEntity<>(name + " has been deleted", HttpStatus.OK);
         }
     }
 }
