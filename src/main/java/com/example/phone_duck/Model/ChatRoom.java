@@ -1,4 +1,4 @@
-package com.example.phone_duck.entity;
+package com.example.phone_duck.Model;
 
 import jakarta.persistence.*;
 import lombok.*;
