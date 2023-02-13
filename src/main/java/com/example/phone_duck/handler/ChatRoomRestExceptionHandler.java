@@ -23,7 +23,6 @@ public class ChatRoomRestExceptionHandler {
         );
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
-
     @ExceptionHandler
     public ResponseEntity<ErrorResponse> handleException(ListEmptyException e){
         ErrorResponse error = new ErrorResponse(HttpStatus.NO_CONTENT.value());
