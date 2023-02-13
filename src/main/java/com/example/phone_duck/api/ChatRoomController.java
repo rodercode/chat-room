@@ -76,7 +76,6 @@ public class ChatRoomController {
             return new ResponseEntity<>("Channel Deleted: Chat Room", HttpStatus.OK);
         }
     }
-
 }
 
 
