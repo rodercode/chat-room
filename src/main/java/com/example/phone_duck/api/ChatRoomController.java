@@ -40,13 +40,13 @@ public class ChatRoomController {
 
     @PostMapping("create")
     private ResponseEntity<String> createChatRoom(@RequestBody ChatRoom chatRoom) throws IOException {
-        try {
-            chatRoomService.create(chatRoom);
-        } catch (DataIntegrityViolationException e) {
+        if (chatRoomService.getChatRoom(chatRoom.getName()) != null)
             throw new UniqueValidationException("There already exist a Chat Room with this name");
+        else {
+            chatRoomService.create(chatRoom);
+            mainChatRoomSocketHandler.broadcast("Created: ");
+            return new ResponseEntity<>(chatRoom.getName() + " has been created", HttpStatus.CREATED);
         }
-        mainChatRoomSocketHandler.broadcast("Created: ");
-        return new ResponseEntity<>(chatRoom.getName() + " has been created", HttpStatus.CREATED);
     }
 
 
