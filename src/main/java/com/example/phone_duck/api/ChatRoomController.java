@@ -54,11 +54,10 @@ public class ChatRoomController {
 
     @PatchMapping("{status}/{id}/update")
     private ResponseEntity<String> activateChatRoom(@PathVariable String status, @PathVariable Long id) {
-        if (chatRoomService.getChatRoom(id).isEmpty()){
+        if (chatRoomService.getChatRoom(id).isEmpty())
             throw new ResourceNotFoundException("Could not update chat room because it doesn't exist");
-        }
         else {
-            Optional<ChatRoom> chatRoom  = chatRoomService.getChatRoom(id);
+            Optional<ChatRoom> chatRoom = chatRoomService.getChatRoom(id);
             switch (status) {
                 case "online" -> chatRoom.get().setIsOnline(true);
                 case "offline" -> chatRoom.get().setIsOnline(false);
@@ -68,20 +67,17 @@ public class ChatRoomController {
             return new ResponseEntity<>("Chat Room is " + status, HttpStatus.OK);
         }
     }
-
-
     @DeleteMapping("{id}/delete")
     private ResponseEntity<String> deleteChatRoom(@PathVariable("id") Long id) throws IOException {
-        try {
+        if (chatRoomService.getChatRoom(id).isEmpty())
+            throw new ResourceNotFoundException("Chat Room you were trying to delete does not exist");
+        else {
             chatRoomService.delete(id);
-        } catch (EmptyResultDataAccessException e) {
-            return ResponseEntity
-                    .status(404)
-                    .header("x-information", "ChatRoom you were tried to delete does not exist")
-                    .build();
+            mainChatRoomSocketHandler.broadcast("Deleted: Chat Room");
+            return new ResponseEntity<>("Channel Deleted: Chat Room", HttpStatus.OK);
         }
-        mainChatRoomSocketHandler.broadcast("Deleted: Chat Room");
-        return new ResponseEntity<>("Channel Deleted: Chat Room", HttpStatus.OK);
     }
 
 }
+
+
