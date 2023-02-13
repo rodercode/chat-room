@@ -12,4 +12,8 @@ public class ErrorResponse {
     private int status;
     private String message;
     private ZonedDateTime date;
+
+    public ErrorResponse(int status) {
+        this.status = status;
+    }
 }
