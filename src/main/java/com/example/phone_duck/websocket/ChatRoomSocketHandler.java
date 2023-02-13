@@ -19,14 +19,12 @@ public class ChatRoomSocketHandler extends TextWebSocketHandler {
 
     @Autowired
     private ChatRoomService chatRoomService;
-
     private List<WebSocketSession> webSocketSessions = new ArrayList<>();
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         String channel = session.getHandshakeHeaders().getFirst("id");
         broadcast(channel, message.getPayload());
-
     }
 
     public void broadcast(String channel, String message) throws IOException {
@@ -40,6 +38,7 @@ public class ChatRoomSocketHandler extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
+        session.getHandshakeHeaders().set("ido", "60");
         webSocketSessions.add(session);
     }
 

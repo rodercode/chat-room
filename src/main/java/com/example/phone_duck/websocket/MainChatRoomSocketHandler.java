@@ -18,8 +18,6 @@ public class MainChatRoomSocketHandler extends TextWebSocketHandler {
     private List<WebSocketSession> webSocketSessions = new ArrayList<>();
     @Autowired
     private ChatRoomService chatRoomService;
-
-
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         for (WebSocketSession webSocketSession : webSocketSessions) {
@@ -29,8 +27,6 @@ public class MainChatRoomSocketHandler extends TextWebSocketHandler {
         }
         broadcast(message.getPayload());
     }
-
-
     public void broadcast(String message) throws IOException {
         for (WebSocketSession webSocketSession : webSocketSessions) {
             webSocketSession.sendMessage(new TextMessage(message));
@@ -43,7 +39,6 @@ public class MainChatRoomSocketHandler extends TextWebSocketHandler {
             session.sendMessage(new TextMessage("Active: " + chatRoom.getName()));
         }
     }
-
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
         webSocketSessions.remove(session);
