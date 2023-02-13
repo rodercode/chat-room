@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("channels")
+@RequestMapping("api/channels")
 public class ChatRoomController {
     @Autowired
     private ChatRoomService chatRoomService;
@@ -40,7 +40,7 @@ public class ChatRoomController {
             return new ResponseEntity<>(chatRoomService.readAll(), HttpStatus.OK);
         }
     }
-    @PostMapping("create")
+    @PostMapping
     private ResponseEntity<String> createChatRoom(@RequestBody ChatRoom chatRoom) throws IOException {
         if (chatRoomService.getChatRoom(chatRoom.getName()) != null)
             throw new UniqueValidationException("There already exist a Chat Room with this name");
@@ -50,8 +50,7 @@ public class ChatRoomController {
             return new ResponseEntity<>(chatRoom.getName() + " has been created", HttpStatus.CREATED);
         }
     }
-
-    @PatchMapping("{status}/{id}/update")
+    @PatchMapping("/{status}/{id}/")
     private ResponseEntity<String> activateChatRoom(@PathVariable String status, @PathVariable Long id) {
         if (chatRoomService.getChatRoom(id).isEmpty())
             throw new ResourceNotFoundException("Could not update chat room because it doesn't exist");
@@ -66,7 +65,7 @@ public class ChatRoomController {
             return new ResponseEntity<>("Chat Room is " + status, HttpStatus.OK);
         }
     }
-    @DeleteMapping("{id}/delete")
+    @DeleteMapping("/{id}")
     private ResponseEntity<String> deleteChatRoom(@PathVariable("id") Long id) throws IOException {
         if (chatRoomService.getChatRoom(id).isEmpty())
             throw new ResourceNotFoundException("Chat Room you were trying to delete does not exist");
