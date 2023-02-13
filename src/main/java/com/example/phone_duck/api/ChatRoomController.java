@@ -40,7 +40,6 @@ public class ChatRoomController {
             return new ResponseEntity<>(chatRoomService.readAll(), HttpStatus.OK);
         }
     }
-
     @PostMapping("create")
     private ResponseEntity<String> createChatRoom(@RequestBody ChatRoom chatRoom) throws IOException {
         if (chatRoomService.getChatRoom(chatRoom.getName()) != null)
@@ -51,7 +50,6 @@ public class ChatRoomController {
             return new ResponseEntity<>(chatRoom.getName() + " has been created", HttpStatus.CREATED);
         }
     }
-
 
     @PatchMapping("{status}/{id}/update")
     private ResponseEntity<String> activateChatRoom(@PathVariable String status, @PathVariable Long id) {
