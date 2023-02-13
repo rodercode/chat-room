@@ -1,5 +1,4 @@
 package com.example.phone_duck.api;
-
 import com.example.phone_duck.entity.ChatRoom;
 import com.example.phone_duck.service.ChatRoomService;
 import com.example.phone_duck.websocket.ChatRoomSocketHandler;
