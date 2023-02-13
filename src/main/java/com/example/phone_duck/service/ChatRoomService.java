@@ -11,6 +11,10 @@ public class ChatRoomService {
     public ChatRoom getChatRoom(Long id){
         return chatRoomRepo.getReferenceById(id);
     }
+
+    public ChatRoom getChatRoom(String name){
+        return chatRoomRepo.findByName(name);
+    }
     public void saveChatRoom(ChatRoom chatRoom){
         chatRoomRepo.save(chatRoom);
     }
