@@ -1,4 +1,4 @@
-package com.example.phone_duck.api;
+package com.example.phone_duck.rest;
 
 import com.example.phone_duck.Model.ChatRoom;
 import com.example.phone_duck.exception.ListEmptyException;
@@ -8,8 +8,6 @@ import com.example.phone_duck.service.ChatRoomService;
 import com.example.phone_duck.websocket.ChatRoomSocketHandler;
 import com.example.phone_duck.websocket.MainChatRoomSocketHandler;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,8 +32,8 @@ public class ChatRoomController {
         if (chatRoomService.readAll().isEmpty())
             throw new ListEmptyException("List is empty");
         else {
-            for (ChatRoom chatRoom : chatRoomService.readAll()) {
-                mainChatRoomSocketHandler.broadcast("Active Channel: " + chatRoom.getName());
+            for (ChatRoom chatRoom : chatRoomService.readAllActiveChatRoom()) {
+                mainChatRoomSocketHandler.broadcast("Active: " + chatRoom.getName());
             }
             return new ResponseEntity<>(chatRoomService.readAll(), HttpStatus.OK);
         }
@@ -53,7 +51,7 @@ public class ChatRoomController {
     }
 
     @PatchMapping("/{status}/{id}")
-    private ResponseEntity<String> activateChatRoom(@PathVariable String status, @PathVariable Long id) {
+    private ResponseEntity<String> activateChatRoom(@PathVariable String status, @PathVariable Long id) throws IOException {
         if (chatRoomService.getChatRoom(id).isEmpty())
             throw new ResourceNotFoundException("Could not update chat room because it doesn't exist");
         else {
@@ -64,10 +62,10 @@ public class ChatRoomController {
                 default -> throw new IllegalStateException(status + "was not defined");
             }
             chatRoomService.saveChatRoom(chatRoom.get());
+            mainChatRoomSocketHandler.broadcast(chatRoomService.getChatRoom(id).get().getName() +" is " + status);
             return new ResponseEntity<>(chatRoomService.getChatRoom(id).get().getName() + " is " + status, HttpStatus.OK);
         }
     }
-
     @DeleteMapping("/{id}")
     private ResponseEntity<String> deleteChatRoom(@PathVariable("id") Long id) throws IOException {
         if (chatRoomService.getChatRoom(id).isEmpty())
@@ -75,7 +73,7 @@ public class ChatRoomController {
         else {
             String name = chatRoomService.getChatRoom(id).get().getName();
             chatRoomService.delete(id);
-            mainChatRoomSocketHandler.broadcast("Deleted: Chat Room");
+            mainChatRoomSocketHandler.broadcast( name + " has been deleted");
             return new ResponseEntity<>(name + " has been deleted", HttpStatus.OK);
         }
     }

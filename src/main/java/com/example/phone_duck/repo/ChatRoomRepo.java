@@ -8,8 +8,6 @@ import java.util.List;
 
 @Repository
 public interface ChatRoomRepo extends JpaRepository<ChatRoom,Long> {
-
     List<ChatRoom> findAllByIsOnlineTrue();
-
     ChatRoom findByName(String name);
 }

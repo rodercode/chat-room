@@ -30,7 +30,6 @@ public class MainChatRoomSocketHandler extends TextWebSocketHandler {
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         webSocketSessions.add(session);
-
         for (ChatRoom chatRoom : chatRoomService.readAllActiveChatRoom()) {
             session.sendMessage(new TextMessage("Active: " + chatRoom.getName()));
         }
