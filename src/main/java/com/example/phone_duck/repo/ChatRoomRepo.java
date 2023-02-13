@@ -1,7 +1,6 @@
 package com.example.phone_duck.repo;
 
-import com.example.phone_duck.entity.ChatRoom;
-import lombok.RequiredArgsConstructor;
+import com.example.phone_duck.Model.ChatRoom;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

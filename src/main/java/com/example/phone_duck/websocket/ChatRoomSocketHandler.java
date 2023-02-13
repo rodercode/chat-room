@@ -1,6 +1,5 @@
 package com.example.phone_duck.websocket;
 
-import com.example.phone_duck.entity.ChatRoom;
 import com.example.phone_duck.service.ChatRoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -10,7 +9,6 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.io.IOException;
-import java.nio.channels.Channel;
 import java.util.ArrayList;
 import java.util.List;
 

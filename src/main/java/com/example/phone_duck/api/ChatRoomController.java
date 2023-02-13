@@ -1,5 +1,6 @@
 package com.example.phone_duck.api;
-import com.example.phone_duck.entity.ChatRoom;
+import com.example.phone_duck.Model.ChatRoom;
+import com.example.phone_duck.exception.ListEmptyException;
 import com.example.phone_duck.service.ChatRoomService;
 import com.example.phone_duck.websocket.ChatRoomSocketHandler;
 import com.example.phone_duck.websocket.MainChatRoomSocketHandler;
@@ -27,12 +28,8 @@ public class ChatRoomController {
 
     @GetMapping
     private ResponseEntity<List<ChatRoom>> showAllChatRoom() throws IOException {
-        if (chatRoomService.readAll().isEmpty()) {
-            return ResponseEntity
-                    .status(204)
-                    .header("x-information", "there are no ChatRooms active")
-                    .build();
-        }
+        if (chatRoomService.readAll().isEmpty())
+            throw new ListEmptyException("List is empty");
         for (ChatRoom chatRoom : chatRoomService.readAll()) {
             mainChatRoomSocketHandler.broadcast("Active Channel: " + chatRoom.getName());
         }
