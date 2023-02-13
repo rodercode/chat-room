@@ -1,6 +1,8 @@
 package com.example.phone_duck.api;
+
 import com.example.phone_duck.Model.ChatRoom;
 import com.example.phone_duck.exception.ListEmptyException;
+import com.example.phone_duck.exception.UniqueValidationException;
 import com.example.phone_duck.service.ChatRoomService;
 import com.example.phone_duck.websocket.ChatRoomSocketHandler;
 import com.example.phone_duck.websocket.MainChatRoomSocketHandler;
@@ -41,18 +43,12 @@ public class ChatRoomController {
         try {
             chatRoomService.create(chatRoom);
         } catch (DataIntegrityViolationException e) {
-            return ResponseEntity
-                    .status(422)
-                    .header("error-information", "Please enter a different name, this name already exist")
-                    .build();
+            throw new UniqueValidationException("There already exist a Chat Room with this name");
         }
-        mainChatRoomSocketHandler.broadcast("Created: " + chatRoom.getName());
-        return new ResponseEntity<>("Chat room has been created", HttpStatus.CREATED);
-
-//        else(){
-//         chatRoomSocketHandler.broadcast(40,"Created: "+chatRoom.getName())
-//        }
+        mainChatRoomSocketHandler.broadcast("Created: ");
+        return new ResponseEntity<>(chatRoom.getName() + " has been created", HttpStatus.CREATED);
     }
+
 
     @PatchMapping("{status}/{id}/update")
     private ResponseEntity<String> activateChatRoom(@PathVariable("status") String status, @PathVariable("id") Long id) {
