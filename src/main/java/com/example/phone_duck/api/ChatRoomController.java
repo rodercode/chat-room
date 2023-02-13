@@ -33,10 +33,12 @@ public class ChatRoomController {
     private ResponseEntity<List<ChatRoom>> showAllChatRoom() throws IOException {
         if (chatRoomService.readAll().isEmpty())
             throw new ListEmptyException("List is empty");
-        for (ChatRoom chatRoom : chatRoomService.readAll()) {
-            mainChatRoomSocketHandler.broadcast("Active Channel: " + chatRoom.getName());
+        else {
+            for (ChatRoom chatRoom : chatRoomService.readAll()) {
+                mainChatRoomSocketHandler.broadcast("Active Channel: " + chatRoom.getName());
+            }
+            return new ResponseEntity<>(chatRoomService.readAll(), HttpStatus.OK);
         }
-        return new ResponseEntity<>(chatRoomService.readAll(), HttpStatus.OK);
     }
 
     @PostMapping("create")
