@@ -4,12 +4,14 @@ import com.example.phone_duck.repo.ChatRoomRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.Optional;
+
 @Service
 public class ChatRoomService {
     @Autowired
     private ChatRoomRepo chatRoomRepo;
-    public ChatRoom getChatRoom(Long id){
-        return chatRoomRepo.getReferenceById(id);
+    public Optional<ChatRoom> getChatRoom(Long id){
+        return chatRoomRepo.findById(id);
     }
 
     public ChatRoom getChatRoom(String name){

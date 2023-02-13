@@ -2,6 +2,7 @@ package com.example.phone_duck.api;
 
 import com.example.phone_duck.Model.ChatRoom;
 import com.example.phone_duck.exception.ListEmptyException;
+import com.example.phone_duck.exception.ResourceNotFoundException;
 import com.example.phone_duck.exception.UniqueValidationException;
 import com.example.phone_duck.service.ChatRoomService;
 import com.example.phone_duck.websocket.ChatRoomSocketHandler;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("channels")
@@ -51,18 +53,20 @@ public class ChatRoomController {
 
 
     @PatchMapping("{status}/{id}/update")
-    private ResponseEntity<String> activateChatRoom(@PathVariable("status") String status, @PathVariable("id") Long id) {
-        System.out.println(status);
-        System.out.println(id);
-        ChatRoom chatRoom = chatRoomService.getChatRoom(id);
-        System.out.println(chatRoom.getId());
-        switch (status) {
-            case "online" -> chatRoom.setIsOnline(true);
-            case "offline" -> chatRoom.setIsOnline(false);
-            default -> throw new IllegalStateException(status + "was not defined");
+    private ResponseEntity<String> activateChatRoom(@PathVariable String status, @PathVariable Long id) {
+        if (chatRoomService.getChatRoom(id).isEmpty()){
+            throw new ResourceNotFoundException("Could not update chat room because it doesn't exist");
         }
-        chatRoomService.saveChatRoom(chatRoom);
-        return new ResponseEntity<>("Chat Room is " + status, HttpStatus.OK);
+        else {
+            Optional<ChatRoom> chatRoom  = chatRoomService.getChatRoom(id);
+            switch (status) {
+                case "online" -> chatRoom.get().setIsOnline(true);
+                case "offline" -> chatRoom.get().setIsOnline(false);
+                default -> throw new IllegalStateException(status + "was not defined");
+            }
+            chatRoomService.saveChatRoom(chatRoom.get());
+            return new ResponseEntity<>("Chat Room is " + status, HttpStatus.OK);
+        }
     }
 
 
