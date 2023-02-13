@@ -27,12 +27,12 @@ public class ChatRoomController {
 
     @GetMapping
     private ResponseEntity<List<ChatRoom>> showAllChatRoom() throws IOException {
-        if (chatRoomService.readAll().isEmpty()) {
-            return ResponseEntity
-                    .status(204)
-                    .header("x-information", "there are no ChatRooms active")
-                    .build();
-        }
+//        if (chatRoomService.readAll().isEmpty()) {
+//            return ResponseEntity
+//                    .status(204)
+//                    .header("x-information", "there are no ChatRooms active")
+//                    .build();
+
         for (ChatRoom chatRoom : chatRoomService.readAll()) {
             mainChatRoomSocketHandler.broadcast("Active Channel: " + chatRoom.getName());
         }
