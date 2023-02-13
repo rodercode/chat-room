@@ -15,16 +15,11 @@ import java.util.List;
 
 @Component
 public class MainChatRoomSocketHandler extends TextWebSocketHandler {
-    private List<WebSocketSession> webSocketSessions = new ArrayList<>();
+    private final List<WebSocketSession> webSocketSessions = new ArrayList<>();
     @Autowired
     private ChatRoomService chatRoomService;
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-        for (WebSocketSession webSocketSession : webSocketSessions) {
-            for (ChatRoom chatRoom : chatRoomService.readAll()) {
-                webSocketSession.sendMessage(new TextMessage(chatRoom.getName()));
-            }
-        }
         broadcast(message.getPayload());
     }
     public void broadcast(String message) throws IOException {
@@ -32,9 +27,10 @@ public class MainChatRoomSocketHandler extends TextWebSocketHandler {
             webSocketSession.sendMessage(new TextMessage(message));
         }
     }
-
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
+        webSocketSessions.add(session);
+
         for (ChatRoom chatRoom : chatRoomService.readAllActiveChatRoom()) {
             session.sendMessage(new TextMessage("Active: " + chatRoom.getName()));
         }

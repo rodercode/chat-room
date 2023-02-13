@@ -47,7 +47,7 @@ public class ChatRoomController {
             throw new UniqueValidationException("There already exist a Chat Room with this name");
         else {
             chatRoomService.create(chatRoom);
-            mainChatRoomSocketHandler.broadcast("Created: ");
+            mainChatRoomSocketHandler.broadcast(chatRoom.getName() + " has been created");
             return new ResponseEntity<>(chatRoom.getName() + " has been created", HttpStatus.CREATED);
         }
     }

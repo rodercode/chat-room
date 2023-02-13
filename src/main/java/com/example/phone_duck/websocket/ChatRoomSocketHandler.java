@@ -36,7 +36,6 @@ public class ChatRoomSocketHandler extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-        session.getHandshakeHeaders().set("ido", "60");
         webSocketSessions.add(session);
     }
 
