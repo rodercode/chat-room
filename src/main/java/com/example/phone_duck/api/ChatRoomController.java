@@ -23,7 +23,6 @@ import java.util.Optional;
 public class ChatRoomController {
     @Autowired
     private ChatRoomService chatRoomService;
-
     @Autowired
     private MainChatRoomSocketHandler mainChatRoomSocketHandler;
 

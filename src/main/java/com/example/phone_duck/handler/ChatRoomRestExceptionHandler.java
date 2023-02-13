@@ -39,4 +39,15 @@ public class ChatRoomRestExceptionHandler {
         );
         return new ResponseEntity<>(error, HttpStatus.UNPROCESSABLE_ENTITY);
     }
+
+    @ExceptionHandler
+    public ResponseEntity<ErrorResponse> handleException(Exception e){
+        ErrorResponse error = new ErrorResponse(
+                HttpStatus.BAD_REQUEST.value(),
+                e.getMessage(),
+                ZonedDateTime.now(ZoneId.of("Z"))
+        );
+        error.setMessage("Failed to convert value of type String to required type Long");
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
 }
