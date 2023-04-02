@@ -28,9 +28,9 @@ and if a channel goes online.
 - Create Websockets
    - [WS]/sub/chatRooms/ <- activate chat room
    - [WS]/sub/channels <- activate main chat
-# Tools
-* Java
-* Intellij
-* Mysql database
-* Spring framework
-* Insomnia
+# Useful Information
+* Programming Language: Java
+* IDE: Intellij
+* Database: MySQL
+* Framework: Spring framework
+* Testing API envioronment: Insomnia
