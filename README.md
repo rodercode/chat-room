@@ -3,6 +3,8 @@ This is a simple Spring application using Rest APIs and websockets.
 you can perform crud operations create, read, delete and also update channel's status.
 also all active channels will be displayed in the Main channel.
 
+![ChatRoom Image](chatroom.png)
+
 
 # Spring dependencies used on this project
 * Data JPA
