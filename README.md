@@ -1,7 +1,8 @@
 ## Chatroom application
-This is a simple Spring application using Rest APIs and websockets.
-you can perform crud operations create, read, delete and also update channel's status.
-also all active channels will be displayed in the Main channel.
+This is a simple Spring application using Rest APIs and Websockets.
+You can perform CRUD operations, create, read, delete, and update 
+the Channel's status. The main Channel will show all active channels
+and if a channel goes online.
 
 ![ChatRoom Image](chatroom.png)
 
