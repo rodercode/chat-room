@@ -13,7 +13,7 @@ and if a channel goes online.
 - JPA and Hibernate
 - Error handling for Rest APIs
 - Working in a Testing API environment
-- 
+
 # How to run this application
 - open terminal and enter: git clone https://github.com/rodercode/phone_duck.git
 - open folder phone_duck/ in desired IDE
